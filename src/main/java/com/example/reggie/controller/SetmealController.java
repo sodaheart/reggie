@@ -11,6 +11,8 @@ import com.example.reggie.service.CategoryService;
 import com.example.reggie.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +23,11 @@ import java.util.stream.Collectors;
 @RequestMapping("setmeal")
 public class SetmealController {
 
+    /**
+     * 开启Spring框架提供的缓存
+     * 用户端查--命中缓存或者添加缓存
+     * 后台对菜品操作时，删除缓存
+     */
     private final CategoryService categoryService;
     private final SetmealService setmealService;
 
@@ -30,6 +37,7 @@ public class SetmealController {
     }
 
     @PostMapping
+    @CacheEvict(value = "setmealCache", allEntries = true) //删除所有缓存
     public R<String> save(@RequestBody SetmealDto setmealDto){
         // 方法重写
         setmealService.saveWithDish(setmealDto);
@@ -80,11 +88,13 @@ public class SetmealController {
     }
 
     @DeleteMapping
+    @CacheEvict(value = "setmealCache", allEntries = true) //删除所有缓存
     public R<String> delete(@RequestParam List<Long> ids){
         setmealService.removeWithDish(ids);
         return R.success("删除套餐成功");
     }
     @GetMapping("/list")
+    @Cacheable(value = "setmealCache", key = "#setmeal.categoryId+'_'+#setmeal.status") // 加入缓存
     public R<List<Setmeal>> list(Setmeal setmeal){
 
         LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
@@ -107,6 +117,7 @@ public class SetmealController {
         return R.success(setmealDto);
     }
     @PostMapping ("/status/{toStatus}")
+    @CacheEvict(value = "setmealCache", allEntries = true) //删除所有缓存
     public R<String> updateStatus(@RequestParam List<Long> ids, @PathVariable Integer toStatus){
         log.info("状态"+ toStatus);
         log.info(ids.toString());
@@ -121,6 +132,7 @@ public class SetmealController {
         }
     }
     @PutMapping
+    @CacheEvict(value = "setmealCache", allEntries = true) //删除所有缓存
     public R<String> update(@RequestBody SetmealDto setmealDto){
         setmealService.updateWithFlavor(setmealDto);
         return R.success("修改套餐成功");
