@@ -54,7 +54,7 @@ public class EmployeeController {
     public R<String> logout(HttpServletRequest request){
         // 清理Session
         request.getSession().removeAttribute("employee");
-        return R.success("成功");
+        return R.success( "成功");
     }
 
     @PostMapping("")
