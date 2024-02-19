@@ -35,7 +35,7 @@ public class AddressBookController {
 
     // 设置默认地址
     @PutMapping("default")
-    public R<AddressBook> setDefault(@RequestBody AddressBook addressBook) {
+    public R<AddressBook> setDefault(@RequestBody AddressBook addressBook) { //这里它会帮你把收到的json数据（字符串）自动转成java对象 Serializable
         log.info("addressBook:{}", addressBook);
         LambdaUpdateWrapper<AddressBook> wrapper = new LambdaUpdateWrapper<>();
         wrapper.eq(AddressBook::getUserId, BaseContext.getCurrentId());
@@ -46,7 +46,7 @@ public class AddressBookController {
         addressBook.setIsDefault(1);
         //SQL:update address_book set is_default = 1 where id = ?
         addressBookService.updateById(addressBook);
-        return R.success(addressBook);
+        return R.success(addressBook);      //它会把你的java对象自动转成json数据（字符串）Serializable
     }
 
     // id查询

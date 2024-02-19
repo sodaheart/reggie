@@ -32,10 +32,10 @@ public class UserController {
             String code = phone.substring(7);
 
             // 往session写入 手机号-验证码 键值对结构
-//            session.setAttribute(phone,code);
+            session.setAttribute(phone,code);
 
             // 往redis中缓存，时间为5分钟
-            redisTemplate.opsForValue().set(phone,code,5, TimeUnit.MINUTES);
+//            redisTemplate.opsForValue().set(phone,code,5, TimeUnit.MINUTES);
             System.out.println(code);
             return R.success("验证码发送成功");
         }
@@ -49,10 +49,10 @@ public class UserController {
         String code = map.get("code").toString();
 
         //从Session中获取保存的验证码
-//        Object codeInSession = session.getAttribute(phone);
+        Object codeInSession = session.getAttribute(phone);
 
         // 改为从redis中获取验证码
-        Object codeInSession = redisTemplate.opsForValue().get(phone);
+//        Object codeInSession = redisTemplate.opsForValue().get(phone);
 
         // 进行验证码的比对（页面提交的验证码和Session中保存的验证码比对）
         if(codeInSession != null && codeInSession.equals(code)){

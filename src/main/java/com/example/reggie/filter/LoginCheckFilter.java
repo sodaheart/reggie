@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 @Slf4j
-@WebFilter(filterName = "loginCheckFilter",urlPatterns = "/*")
+@WebFilter(filterName = "loginCheckFilter", urlPatterns = "/*")
 public class LoginCheckFilter implements Filter {
     private static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
     @Override

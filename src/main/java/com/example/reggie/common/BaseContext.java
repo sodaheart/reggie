@@ -13,4 +13,7 @@ public class BaseContext {
         return threadLocal.get();
     }
 
+    //成员变量：类型+名称;
+    //成员方法：返回值+名称（）{}
+
 }

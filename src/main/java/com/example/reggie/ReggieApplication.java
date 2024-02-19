@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Slf4j
 @SpringBootApplication
-@ServletComponentScan
+@ServletComponentScan   //实现登录校验功能
 @EnableTransactionManagement
 @EnableCaching
 public class ReggieApplication {
